@@ -1,0 +1,38 @@
+{
+  "name": "ng-time-past-pipe",
+  "version": "1.0.0",
+  "description": "Reactive Textual Representation of the time that has been passed between a given date and now.",
+  "author": "David Fecke (leptoquark1)",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:leptoquark1/ng-time-past-pipe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/leptoquark1/ng-time-past-pipe/issues"
+  },
+  "homepage": "https://github.com/leptoquark1/ng-time-past-pipe#readme",
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "^8.0.0 || ^9.0.0",
+    "@angular/core": "^8.0.0 || ^9.0.0",
+    "tslib": "^1.10.0"
+  },
+  "keywords": [
+    "timepast",
+    "time-past",
+    "timeago",
+    "time-ago",
+    "time",
+    "past",
+    "moments",
+    "ivy",
+    "lib",
+    "pipeline",
+    "pipe",
+    "AOT",
+    "ng",
+    "angular",
+    "Angular2",
+    "Angular4"
+  ]
+}
