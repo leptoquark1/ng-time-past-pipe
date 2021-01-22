@@ -1,27 +1,29 @@
-# Playground
+# NgTimePastPipe
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.0.
+Transform anything that can be parsed to a Date in the past, to a string which represent the relative
+time that has been passed between now and this point of time.
 
-## Development server
+This is a rewrite of the orphaned project [AndrewPoyntz Time-ago-pipe](https://github.com/AndrewPoyntz/time-ago-pipe).
+It's a hard fork and should provide a better performance and compatibility.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Installation
 
-## Code scaffolding
+```
+npm i ng-time-past-pipe
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Usage
 
-## Build
+```ts
+import { NgTimePastPipeModule } from 'ng-time-past-pipe';
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+@NgModule({
+  imports: [NgTimePastPipeModule]
+})
 
-## Running unit tests
+// [...]
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```angular2html
+<h2>This Page was rendered: {{ date1 | timePast }}</h2>
+```
