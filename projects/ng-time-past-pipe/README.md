@@ -72,10 +72,9 @@ export class FeatureModule {}
 Sometimes it is inevitable to adjust the output. Common use cases are, for example:
 
 - Language Localization (_l10n_) / Internationalization (_i18n_),
-- Adjusting the time intervals (_output conditions_) to your own needs
+- Adjusting the time intervals (_output conditions_) to your own needs. [Check the default time intervals](#outputs)
 - Or even more specific customizations
 
-Responsible for this is the `TimeDiffGenerator`,
 Responsible in the last instance is the `TimeDiffGenerator`.
 You can override the default one by providing your own custom generator using the `CUSTOM_TIME_DIFF_GENERATOR` InjectionToken:
 
@@ -108,6 +107,44 @@ export class TestModule {}
 
 You can always fall back to the `defaultTimeDiffGenerator` your custom one, as shown in the example above.
 
+### Adjust the Update Interval
+
+When you make changes to the "Result Output", you should keep in mind that the default update cycle, while being kept quite general, it's also somewhat adjusted with the default generator.
+
+Default Update Interval:
+
+| Time Difference    | Update Interval  |
+| ------------------ | ---------------- |
+| less than 1 min    | every second     |
+| less than an hour  | every 30 seconds |
+| less then a day    | every 5 minutes  |
+| greater than a day | every hour       |
+
+If the Change-Detector cycles are no longer sufficient, then you should adapt the UpdateIntervallGenerator to the new circumstances.
+Just as with `TimeDiffGenerator`, you can provide the `CUSTOM_UPDATE_INTERVAL_GENERATOR` injection token with an alternative Generator to accomplish this:
+
+```typescript
+import { CUSTOM_UPDATE_INTERVAL_GENERATOR, NgTimePastPipeModule } from 'ng-time-past-pipe';
+
+@NgModule({
+  providers: [{ provide: CUSTOM_UPDATE_INTERVAL_GENERATOR, useValue: updateIntervalGenerator }],
+  imports: [NgTimePastPipeModule],
+})
+export class TestModule {}
+```
+
+```typescript
+import { UpdateIntervalGenerator } from 'ng-time-past-pipe';
+
+const updateIntervalGenerator: UpdateIntervalGenerator = (diff): number => {
+  if (diff.seconds < 60) {
+    return 5;
+  }
+  return 20;
+}
+```
+
+Keep in mind that the return value should be the interval in **seconds**.
 
 ## Notes
 

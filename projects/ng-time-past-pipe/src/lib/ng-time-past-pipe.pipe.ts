@@ -1,13 +1,8 @@
 import { ChangeDetectorRef, Inject, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import { createTimeDiff, TIME_DIFF_GENERATOR, TimeDiffGenerator } from './time-diff';
+import { UPDATE_INTERVAL_GENERATOR, UpdateIntervalGenerator } from './time-interval';
 
 type TAInput = number | string | Date;
-
-const secondsOfA = {
-  minute: 60,
-  hour: 60 * 60,
-  day: 60 * 60 * 24,
-};
 
 @Pipe({
   name: 'timePast',
@@ -25,25 +20,8 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
     @Inject(TIME_DIFF_GENERATOR) private readonly timeDiffGenerator: TimeDiffGenerator,
+    @Inject(UPDATE_INTERVAL_GENERATOR) private readonly updateIntervalGenerator: UpdateIntervalGenerator,
   ) { }
-
-  /**
-   * Determinate the point of time on when the output should be checked for a update
-   *
-   * @param seconds The latest seconds that have been passed
-   * @return A point of time in future in seconds
-   */
-  private static getSecondsUntilUpdate(seconds: number): number {
-    if (seconds < secondsOfA.minute) { // less than 1 min, update every 2 secs
-      return 1;
-    } else if (seconds < secondsOfA.hour) { // less than an hour, update every 30 secs
-      return 30;
-    } else if (seconds < secondsOfA.day) { // less then a day, update every 5 min
-      return 300;
-    }
-    // update every hour
-    return 3600;
-  }
 
   /**
    * Optimistic parse a given input to seconds that past between it and now
@@ -113,7 +91,7 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
       this.changeDetectorRef.reattach();
       this.changeDetectorRef.markForCheck();
       clearTimeout(timer);
-    }, NgTimePastPipePipe.getSecondsUntilUpdate(seconds) * 1000);
+    }, this.updateIntervalGenerator(timeDiff) * 1000);
 
     this.changeDetectorRef.reattach();
     return result;
