@@ -1,4 +1,4 @@
-import { CUSTOM_TIME_DIFF_GENERATOR, defaultTimeDiffGenerator, TimeDiff, TimeDiffGenerator } from './time-diff';
+import { TimeDiff } from './time-diff';
 import { inject, InjectFlags, InjectionToken } from '@angular/core';
 
 /**

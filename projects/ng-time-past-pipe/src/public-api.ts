@@ -1,9 +1,8 @@
 /*
  * Public API Surface of ng-time-past-pipe
  */
-
-export * from './lib/ng-time-past-pipe.pipe';
-export * from './lib/ng-time-past-pipe.module';
+export * from './lib/time-past.pipe';
+export * from './lib/time-past.module';
 export {
   TimeDiffGenerator,
   defaultTimeDiffGenerator,
@@ -14,3 +13,5 @@ export {
   defaultUpdateIntervalGenerator,
   CUSTOM_UPDATE_INTERVAL_GENERATOR,
 } from './lib/time-interval';
+export { TAInput } from './lib/time-past';
+export * from './lib/time-past.service';

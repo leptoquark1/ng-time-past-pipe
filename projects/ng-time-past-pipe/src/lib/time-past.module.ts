@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { NgTimePastPipePipe } from './ng-time-past-pipe.pipe';
+import { NgTimePastPipePipe } from './time-past.pipe';
 
 @NgModule({
   declarations: [NgTimePastPipePipe],

@@ -61,9 +61,29 @@ import { NgTimePastPipeModule } from 'ng-time-past-pipe';
 export class FeatureModule {}
 ```
 
+### Using the Pipe
+
 ```angular2html
 <h2>This Page was rendered: {{ date1 | timePast }}</h2>
 ```
+
+### Using the Service
+
+```typescript
+import { TimePastService } from 'ng-time-past-pipe';
+
+@Component({
+  selector: 'app-test'
+})
+export class TestComponent {
+  someTimePast: string;
+
+  constructor(private timePastService: TimePastService) {
+    this.someTimePast = this.timePastService.timePast('2021-01-31T16:12:00.000Z');
+  }
+}
+```
+
 
 ## Customization
 
