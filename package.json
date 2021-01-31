@@ -4,8 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build-playground": "ng build NgTimePastPipe",
-    "build": "ng-packagr -p projects/ng-time-past-pipe/ng-package.json",
+    "prebuild-playground": "ng build NgTimePastPipe",
+    "build-playground": "ng build --prod",
+    "prerelease": "ng build NgTimePastPipe",
+    "release": "ng-packagr -p projects/ng-time-past-pipe/ng-package.json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
