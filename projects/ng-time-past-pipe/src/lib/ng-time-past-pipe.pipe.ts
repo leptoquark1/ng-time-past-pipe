@@ -1,5 +1,7 @@
 import { Pipe, PipeTransform, ChangeDetectorRef, OnDestroy } from '@angular/core';
 
+type TAInput = number | string | Date;
+
 const secondsOfA = {
   minute: 60,
   hour: 60 * 60,
@@ -11,6 +13,7 @@ const secondsOfA = {
   pure: false,
 })
 export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
+  private lastInput: any;
   private lastSeconds: number;
   private lastResult: string;
   private timer: number;
@@ -44,6 +47,10 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
    * @param seconds The seconds that represent the time that has been passed
    */
   private static getStringDiff(seconds: number) {
+    if (seconds < 0) {
+      return 'about now';
+    }
+
     if (seconds <= 5) {
       return 'a few seconds ago';
     } else if (seconds <= 59) {
@@ -84,6 +91,39 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
   }
 
   /**
+   * Optimistic parse a given input to seconds that past between it and now
+   *
+   * @param value A value of type string, number or date
+   * @return The time past in seconds between now and input value
+   * @private
+   */
+  private static parseInputValue(value: TAInput): number {
+    let dateValueTime;
+    if (typeof value === 'number') {
+      if (value < 0) { value *= -1; } // Negative number will be handled a positive
+
+      const length = Math.ceil(Math.log10(value + 1));
+      if (length < 10 && length > 0) {
+        return value; // Guessing the input is already the passed seconds
+      }
+
+      if (length === 10) { value *= 1000; } // Guessing UnixTimestamp
+      dateValueTime = value; // All other lengths are considered intentional and therefore processed
+    } else {
+      // Use Date constructor to determine the microseconds
+      dateValueTime = (value instanceof Date ? value : new Date(value)).getTime();
+    }
+
+    const dateNowTime = Date.now();
+    if (dateNowTime <= dateValueTime) {
+      return -1; // Ceil future event
+    }
+
+    // Using Math.floor to make sure show the past seconds
+    return Math.floor((dateNowTime - dateValueTime) / 1000);
+  }
+
+  /**
    * Transform anything that can be parsed to a Date in the past, to a string that represent the relative
    *  time that has been passed between now and this point of time.
    *
@@ -91,29 +131,35 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
    * @return (Number | String | Date) The textual representation of the time that has been passed between the given Date
    *  and the current. If input is in the future or invalid it returns the input itself.
    */
-  transform<T extends (number | string | Date)>(value: T): string | T {
-    const dateValue = new Date(value);
-    const now = new Date();
-    const seconds = Math.round(Math.abs((now.getTime() - dateValue.getTime()) / 1000));
+  transform<T extends TAInput>(value: T): string | T {
+    const lastInput = this.lastInput;
+    this.lastInput = value;
 
-    if (Number.isNaN(seconds) || seconds < 0) {
-      console.warn(`[TimeAgoPipe] Invalid Input of type ${typeof value} (${value}).`)
+    if ((typeof value === 'number' || typeof value === 'string' || value instanceof Date) === false) {
+      if (lastInput !== value) {
+        console.warn(`[TimePastPipe] Invalid Input of type ${typeof value} (${value}).`);
+      }
       return value;
     }
 
+    const seconds = NgTimePastPipePipe.parseInputValue(value);
     if (this.lastSeconds === seconds) {
       return this.lastResult;
     }
+
+    this.changeDetectorRef.detach();
     this.lastSeconds = seconds;
 
     const result = this.lastResult = NgTimePastPipePipe.getStringDiff(seconds);
 
-    let timer: number;
+    let timer;
     this.timer = timer = setTimeout(() => {
+      this.changeDetectorRef.reattach();
       this.changeDetectorRef.markForCheck();
       clearTimeout(timer);
-    }, NgTimePastPipePipe.getSecondsUntilUpdate(seconds) * 1000) as unknown as number;
+    }, NgTimePastPipePipe.getSecondsUntilUpdate(seconds) * 1000);
 
+    this.changeDetectorRef.reattach();
     return result;
   }
 
