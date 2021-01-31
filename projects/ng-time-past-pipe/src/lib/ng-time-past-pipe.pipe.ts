@@ -16,7 +16,7 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
   private lastInput: any;
   private lastSeconds: number;
   private lastResult: string;
-  private timer: number;
+  private timer: any;
 
   /**
    * TimePastPipe Class Constructor
