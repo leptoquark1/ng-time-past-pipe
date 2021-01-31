@@ -1,6 +1,6 @@
 {
   "name": "ng-time-past-pipe",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Reactive Textual Representation of the time that has been passed between a given date and now.",
   "author": "David Fecke (leptoquark1)",
   "repository": {
