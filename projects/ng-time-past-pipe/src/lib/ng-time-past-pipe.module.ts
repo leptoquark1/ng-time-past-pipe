@@ -3,6 +3,6 @@ import { NgTimePastPipePipe } from './ng-time-past-pipe.pipe';
 
 @NgModule({
   declarations: [NgTimePastPipePipe],
-  exports: [NgTimePastPipePipe]
+  exports: [NgTimePastPipePipe],
 })
 export class NgTimePastPipeModule { }

@@ -1,4 +1,5 @@
-import { Pipe, PipeTransform, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Inject, OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { createTimeDiff, TIME_DIFF_GENERATOR, TimeDiffGenerator } from './time-diff';
 
 type TAInput = number | string | Date;
 
@@ -21,7 +22,10 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
   /**
    * TimePastPipe Class Constructor
    */
-  constructor(private readonly changeDetectorRef: ChangeDetectorRef) { }
+  constructor(
+    private readonly changeDetectorRef: ChangeDetectorRef,
+    @Inject(TIME_DIFF_GENERATOR) private readonly timeDiffGenerator: TimeDiffGenerator,
+  ) { }
 
   /**
    * Determinate the point of time on when the output should be checked for a update
@@ -39,55 +43,6 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
     }
     // update every hour
     return 3600;
-  }
-
-  /**
-   * Return a respective textual representation of the input, as the input is a timespan that has been passed.
-   *
-   * @param seconds The seconds that represent the time that has been passed
-   */
-  private static getStringDiff(seconds: number) {
-    if (seconds < 0) {
-      return 'about now';
-    }
-
-    if (seconds <= 5) {
-      return 'a few seconds ago';
-    } else if (seconds <= 59) {
-      return seconds + ' seconds ago';
-    } else if (seconds <= 90) {
-      return 'about a minute ago';
-    }
-
-    const minutes = Math.round(Math.abs(seconds / 60));
-    if (minutes <= 45) {
-      return minutes + ' minutes ago';
-    } else if (minutes <= 90) {
-      return 'an hour ago';
-    }
-
-    const hours = Math.round(Math.abs(minutes / 60));
-    if (hours <= 22) {
-      return hours + ' hours ago';
-    } else if (hours <= 36) {
-      return 'a day ago';
-    }
-
-    const days = Math.round(Math.abs(hours / 24));
-    if (days <= 25) {
-      return days + ' days ago';
-    } else if (days <= 45) {
-      return 'a month ago';
-    }
-
-    const months = Math.round(Math.abs(days / 30.416));
-    if (days <= 345) {
-      return months + ' months ago';
-    } else if (days <= 545) {
-      return 'a year ago';
-    }
-
-    return Math.round(Math.abs(days / 365)) + ' years ago';
   }
 
   /**
@@ -150,7 +105,8 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
     this.changeDetectorRef.detach();
     this.lastSeconds = seconds;
 
-    const result = this.lastResult = NgTimePastPipePipe.getStringDiff(seconds);
+    const timeDiff = createTimeDiff(seconds);
+    const result = this.lastResult = this.timeDiffGenerator(timeDiff);
 
     let timer;
     this.timer = timer = setTimeout(() => {

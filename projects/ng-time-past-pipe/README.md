@@ -65,6 +65,49 @@ export class FeatureModule {}
 <h2>This Page was rendered: {{ date1 | timePast }}</h2>
 ```
 
+## Customization
+
+### Overwrite the Result Output
+
+Sometimes it is inevitable to adjust the output. Common use cases are, for example:
+
+- Language Localization (_l10n_) / Internationalization (_i18n_),
+- Adjusting the time intervals (_output conditions_) to your own needs
+- Or even more specific customizations
+
+Responsible for this is the `TimeDiffGenerator`,
+Responsible in the last instance is the `TimeDiffGenerator`.
+You can override the default one by providing your own custom generator using the `CUSTOM_TIME_DIFF_GENERATOR` InjectionToken:
+
+```typescript
+import {
+  CUSTOM_TIME_DIFF_GENERATOR,
+  defaultTimeDiffGenerator,
+  NgTimePastPipeModule,
+  TimeDiffGenerator
+} from 'ng-time-past-pipe';
+
+export const timeDiffGenerator: TimeDiffGenerator = (diff): string => {
+  if (diff.seconds <= 5) {
+    return 'This very Moment';
+  } else {
+    return defaultTimeDiffGenerator(diff);
+  }
+}
+
+@NgModule({
+  declarations: [TestComponent],
+  providers: [
+    { provide: CUSTOM_TIME_DIFF_GENERATOR, useValue: timeDiffGenerator },
+  ],
+  imports: [CommonModule, NgTimePastPipeModule],
+  exports: [TestComponent]
+})
+export class TestModule {}
+```
+
+You can always fall back to the `defaultTimeDiffGenerator` your custom one, as shown in the example above.
+
 
 ## Notes
 
