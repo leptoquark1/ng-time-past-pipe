@@ -1,5 +1,86 @@
-<div class="content" role="main">
 
-  <h2>This Page was rendered: {{ date1 | timePast }}</h2>
+<h1>NgTimePastPipe Examples</h1>
 
+<div class="panel">
+
+  <h2 id="data-outputs">1. Output Examples</h2>
+  <button type="button" class="btn btn-reset" title="Resets the examples to its initial value" (click)="loadDataOutputExamples()">Reset</button>
+
+  <div class="panel--content">
+
+    <div class="example-container" *ngFor="let example of outputExamples">
+      <div class="example-header">
+        <h3>{{ example.label }}</h3>
+        <span class="example--source">{{ example.source ? example.source : example.value }}</span>
+      </div>
+      <div class="example-wrapper">
+        <div class="example--value">{{ example.value | timePast }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+
+  <h2 id="data-source-types">2. Data Source Types</h2>
+  <button type="button" class="btn btn-reset" title="Resets the examples to 'NOW()'" (click)="loadDataSourcesExamples()">Reset</button>
+
+
+  <div class="panel--content">
+    <p class="panel-description">Basically everything that can be parsed by JavaScripts Date Constructor, but also some common used Date-Time types.</p>
+
+    <div class="example-container" *ngFor="let example of sourcesExamples">
+      <div class="example-header">
+        <h3>{{ example.label }}</h3>
+        <span class="example--source">{{ example.source ? example.source : example.value }}</span>
+      </div>
+      <div class="example-wrapper">
+        <div class="example--value">{{ example.value | timePast }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+
+  <h2 id="fallback-results">3. Fallback Results</h2>
+
+  <div class="panel--content">
+    <div class="example-container" *ngFor="let example of fallbackExamples">
+      <div class="example-header">
+        <h3>{{ example.label }}</h3>
+        <span class="example--source">{{ example.source ? example.source : example.value }}</span>
+      </div>
+      <div class="example-wrapper">
+        <div class="example--value">{{ example.value | timePast }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+
+  <h2 id="try-it-yourself">4. Try it yourself</h2>
+  <button type="button" class="btn btn-reset" title="Resets the result to you input" (click)="onCustomInputChange()">Reset</button>
+
+  <div class="panel--content">
+    <div class="input-container">
+      <h3>Input</h3>
+
+      <div class="input-wrapper">
+        <label for="custom-input">DateTime</label>
+        <input id="custom-input" type="datetime-local" (change)="onCustomInputChange($event)">
+      </div>
+    </div>
+
+    <div class="example-container">
+      <div class="example-header">
+        <h4>Result</h4>
+        <span class="example--source">{{ customInputValue ? customInputValue : 'new Date(...)' }}</span>
+      </div>
+      <div class="example-wrapper">
+        <div class="example--value">{{ customInputValue ? (customInputValue | timePast) : '- Enter a valid value -' }}</div>
+      </div>
+    </div>
+  </div>
 </div>
