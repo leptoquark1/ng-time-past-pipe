@@ -12,7 +12,7 @@ export type TAInput = number | string | Date;
  */
 export const parseInputValue = (value: TAInput): number => {
   let dateValueTime;
-  if (typeof value === 'number') {
+  if (typeof value === 'number' && Number.isNaN(value) === false) {
     if (value < 0) { value *= -1; } // Negative number will be handled a positive
 
     const length = Math.ceil(Math.log10(value + 1));
@@ -22,9 +22,12 @@ export const parseInputValue = (value: TAInput): number => {
 
     if (length === 10) { value *= 1000; } // Guessing UnixTimestamp
     dateValueTime = value; // All other lengths are considered intentional and therefore processed
-  } else {
+  } else if (typeof value === 'string' || value instanceof Date) {
     // Use Date constructor to determine the microseconds
     dateValueTime = (value instanceof Date ? value : new Date(value)).getTime();
+  } else {
+    // Fallback to zero with invalid input
+    return 0;
   }
 
   const dateNowTime = Date.now();
