@@ -1,17 +1,20 @@
 {
-  "name": "playground",
+  "name": "ng-time-past-pipe",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "prebuild-playground": "ng build NgTimePastPipe",
-    "build-playground": "ng build --prod",
-    "prerelease": "ng build NgTimePastPipe",
-    "release": "ng-packagr -p projects/ng-time-past-pipe/ng-package.json",
+    "build": "ng run build-playground",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "build:lib": "ng build NgTimePastPipe --prod",
+    "test:lib": "ng test NgTimePastPipe",
+    "test:lib:headless": "cross-env CI=true npm run test:lib",
+    "copy:assets": "cp -r README.md CHANGELOG.md LICENSE dist/ng-time-past-pipe",
+    "release": "cd projects/ng-time-past-pipe && standard-version --infile ../../CHANGELOG.md",
+    "publish": "npm run build:lib && npm run copy:assets",
+    "build:playground": "npm run build:lib && ng build --prod"
   },
   "private": false,
   "dependencies": {
@@ -33,6 +36,7 @@
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
     "codelyzer": "^6.0.0",
+    "cross-env": "^7.0.3",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~5.0.0",
@@ -42,6 +46,7 @@
     "karma-jasmine-html-reporter": "^1.5.0",
     "ng-packagr": "^11.0.0",
     "protractor": "~7.0.0",
+    "standard-version": "^9.3.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~4.1.3"
