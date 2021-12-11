@@ -7,7 +7,7 @@
     "access": "public"
   },
   "dependencies": {
-    "tslib": "^1.10.0"
+    "tslib": "^2.3.0"
   },
   "repository": {
     "type": "git",
