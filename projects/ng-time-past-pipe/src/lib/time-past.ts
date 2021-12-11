@@ -34,7 +34,7 @@ export const parseInputValue = (value: TAInput): number => {
 
   // Using Math.floor to make sure show the past seconds
   return Math.floor((dateNowTime - dateValueTime) / 1000);
-}
+};
 
 /**
  * Strict TAInput Type Validator
@@ -44,4 +44,4 @@ export const parseInputValue = (value: TAInput): number => {
  */
 export const validateTAInputType = (value: TAInput): boolean => {
   return (typeof value === 'number' || typeof value === 'string' || value instanceof Date);
-}
+};

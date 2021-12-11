@@ -28,14 +28,14 @@ export const CUSTOM_UPDATE_INTERVAL_GENERATOR = new InjectionToken<UpdateInterva
 export const defaultUpdateIntervalGenerator: UpdateIntervalGenerator = (diff: TimeDiff): number => {
   if (diff.seconds < 60) { // less than 1 min, update every second
     return 1;
-  } else if (diff.seconds < 60 * 60) { // less than an hour, update every 30 secs
+  } else if (diff.seconds < 3600) { // less than an hour, update every 30 secs
     return 30;
-  } else if (diff.seconds < 60 * 60 * 24) { // less then a day, update every 5 min
+  } else if (diff.seconds < 86400) { // less than a day, update every 5 min
     return 300;
   }
   // update every hour
   return 3600;
-}
+};
 
 /**
  * Provides the `UpdateIntervalGenerator` preferring a custom provider for internal usage

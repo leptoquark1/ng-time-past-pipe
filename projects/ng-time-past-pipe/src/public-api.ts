@@ -1,13 +1,10 @@
-/*
- * Public API Surface of ng-time-past-pipe
- */
 export * from './lib/time-past.pipe';
 export * from './lib/time-past.module';
 export {
   TimeDiffGenerator,
   defaultTimeDiffGenerator,
   CUSTOM_TIME_DIFF_GENERATOR,
-} from './lib/time-diff'
+} from './lib/time-diff';
 export {
   UpdateIntervalGenerator,
   defaultUpdateIntervalGenerator,

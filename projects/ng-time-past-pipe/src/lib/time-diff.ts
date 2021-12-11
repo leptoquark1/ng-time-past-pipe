@@ -78,7 +78,7 @@ export const defaultTimeDiffGenerator: TimeDiffGenerator = (diff: TimeDiff): str
   }
 
   return years + ' years ago';
-}
+};
 
 /**
  * Provides the TimeDiffGenerator preferring a custom provider for internal usage
@@ -108,4 +108,4 @@ export const createTimeDiff = (seconds: number): TimeDiff => {
   diff.years = Math.round(Math.abs(diff.days / 365));
 
   return diff as TimeDiff;
-}
+};
