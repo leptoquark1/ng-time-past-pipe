@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { getDataSourcesExamples, getFallbackExamples, getOutputExamples } from './examples';
-
 
 
 @Component({
   selector: 'tpp-root',
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   private lastCustomInputElement;
