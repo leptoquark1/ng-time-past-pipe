@@ -9,12 +9,14 @@ An easy-to-use and lightweight **Angular Pipe**, that transform any DateLike Inp
 
 ## Overview
 
-- [x] Supports all common inputs that represent a DateTime including:
+- [x] Display both, **past and future** events well readable
+- [x] Support for all common type of input values that represent some sort of DateTime including:
+  * Basically everything that can be parsed by JavaScripts Date Constructor
   * Numeric Epoch time values like (**Unix Timestamp** or JavaScripts Date.now())
   * **ISO (8601) Strings** (Example `2021-01-31T03:58:23.658Z`)
-  * Basically everything that can be parsed by JavaScripts Date Constructor
-- [x] Fallback for invalid inputs
 - [x] Light-weight, performance optimized and easy to use
+- [x] [Customizable and Translatable](#customization)
+- [x] No stale timestamp...
 
 ### Demo
 
@@ -23,22 +25,40 @@ See it in Action and try it by yourself on the [Demo Playground](https://ng-time
 
 ### Outputs
 
-From Top to Bottom (First Fit)
+From top to bottom (First Fit)
 
-| Time Input           | Output             |Extra
-| -------------------- | ------------------ |---
-| Below 5 seconds      | a few seconds ago  | -
-| Below 59 seconds     | X seconds ago      | Updates every second
-| Below 90 seconds     | about a minute ago | -
-| Below 45 Minutes     | X minutes ago      | Updates every minute
-| Below 90 Minutes     | an hour ago        | -
-| Below 22 Hours       | X hours ago        | Updates every hour
-| Below 36 Hours       | a day ago          | -
-| Below 25 Days        | X days ago         | -
-| Below 45 Days        | a month ago        | -
-| Below 356 Days       | X months ago       | -
-| Below 545 Days       | a year ago         | -
-| More than 546 Days   | X years ago        | -
+#### Times in the past
+
+| Time Input         | Output             | Extra                |
+|--------------------|--------------------|----------------------|
+| Below 5 seconds    | a few seconds ago  | Updates every second |
+| Below 59 seconds   | X seconds ago      | -                    |
+| Below 90 seconds   | about a minute ago | -                    |
+| Below 45 Minutes   | X minutes ago      | Updates every minute |
+| Below 90 Minutes   | one hour ago       | -                    |
+| Below 22 Hours     | X hours ago        | Updates every hour   |
+| Below 36 Hours     | a day ago          | -                    |
+| Below 25 Days      | X days ago         | -                    |
+| Below 45 Days      | a month ago        | -                    |
+| Below 356 Days     | X months ago       | -                    |
+| Below 545 Days     | a year ago         | -                    |
+| More than 546 Days | X years ago        | -                    |
+
+#### Times in the future
+
+| Time Input         | Output        | Extra                 |
+|--------------------|---------------|-----------------------|
+| Below 59 Seconds   | in X seconds  | Updates every second  |
+| Below 90 Seconds   | in one minute | -                     |
+| Below 59 Minutes   | in X minutes  | Updates every minute  |
+| Below 90 Minutes   | in one hour   | -                     |
+| Below 22 Hours     | in X hours    | Updates every hour    |
+| Below 36 Hours     | in one day    | -                     |
+| Below 25 Days      | in X days     | -                     |
+| Below 45 Days      | in one month  | -                     |
+| Below 356 Days     | in X months   | -                     |
+| Below 545 Days     | in one year   | -                     |
+| More than 546 Days | in X years    | -                     |
 
 
 ## Installation
@@ -107,11 +127,12 @@ import {
 
 export const timeDiffGenerator: TimeDiffGenerator = (diff): string => {
   if (diff.seconds <= 5) {
-    return 'This very Moment';
+    return diff.isFuture ? 'In a few moments' : 'A few moments ago';
   } else {
     return defaultTimeDiffGenerator(diff);
   }
 }
+
 
 @NgModule({
   declarations: [TestComponent],
@@ -124,6 +145,7 @@ export const timeDiffGenerator: TimeDiffGenerator = (diff): string => {
 export class TestModule {}
 ```
 
+Distinguish between future and past events by `diff.isFuture`.
 You can always fall back to the `defaultTimeDiffGenerator` your custom one, as shown in the example above.
 
 ### Adjust the Update Interval
@@ -133,7 +155,7 @@ When you make changes to the "Result Output", you should keep in mind that the d
 Default Update Interval:
 
 | Time Difference    | Update Interval  |
-| ------------------ | ---------------- |
+|--------------------|------------------|
 | less than 1 min    | every second     |
 | less than an hour  | every 30 seconds |
 | less then a day    | every 5 minutes  |
@@ -168,7 +190,7 @@ Keep in mind that the return value should be the interval in **seconds**.
 ## Notes
 
 This is a rewrite of the orphaned project [AndrewPoyntz Time-ago-pipe](https://github.com/AndrewPoyntz/time-ago-pipe).
-It's a hard fork and should provide a better performance and compatibility.
+It's a hard fork and should provide a better performance and compatibility as well as additional features.
 
 Feel free to open an issue when you are missing any feature or experience any problems.
 Any contributions are welcome :)

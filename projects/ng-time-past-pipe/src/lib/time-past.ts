@@ -13,7 +13,10 @@ export type TAInput = number | string | Date;
 export const parseInputValue = (value: TAInput): number => {
   let dateValueTime;
   if (typeof value === 'number') {
-    if (value < 0) { value *= -1; } // Negative number will be handled a positive
+    if (value <= 0) {
+      // Negative number will always be handled as seconds in the future
+      return value;
+    }
 
     const length = Math.ceil(Math.log10(value + 1));
     if (length < 10 && length > 0) {
@@ -27,13 +30,7 @@ export const parseInputValue = (value: TAInput): number => {
     dateValueTime = (value instanceof Date ? value : new Date(value)).getTime();
   }
 
-  const dateNowTime = Date.now();
-  if (dateNowTime <= dateValueTime) {
-    return -1; // Ceil future event
-  }
-
-  // Using Math.floor to make sure show the past seconds
-  return Math.floor((dateNowTime - dateValueTime) / 1000);
+  return Math.floor((Date.now() - dateValueTime) / 1000);
 };
 
 /**
