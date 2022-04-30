@@ -69,21 +69,65 @@ export function getDataSourcesExamples(): Example[] {
       value: (new Date()).toISOString(),
     },
     {
-      label: 'Numeric Value (milliseconds)',
+      label: 'Numeric Value (JS timestamp)',
       value: Date.now(),
     },
     {
-      label: 'Numeric Value (seconds)',
+      label: 'Numeric Value (Unix timestamp)',
       value: Math.floor(Date.now() / 1000),
+    },
+    {
+      label: 'Static numeric Value (seconds)',
+      value: 60,
     },
   ];
 }
 
-export function getFallbackExamples(): Example[] {
+export function getFutureExamples(): Example[] {
   return [
     {
-      label: 'Some time in the Future',
-      value: Math.floor(Date.now() / 1000) + 2676648,
+      label: 'Under 60 seconds in the future',
+      value: new Date(Date.now() + (45 * 1000)).toISOString(),
+    },
+    {
+      label: 'Under 90 seconds in the future',
+      value: new Date(Date.now() + (77 * 1000)).toISOString(),
+    },
+    {
+      label: 'Under 45 minutes in the future',
+      value: new Date(Date.now() + (23 * 60 * 1000)).toISOString(),
+    },
+    {
+      label: 'Under 90 minutes in the future',
+      value: new Date(Date.now() + (55 * 60 * 1000)).toISOString(),
+    },
+    {
+      label: 'Under 22 hours in the future',
+      value: new Date(Date.now() + (12 * 60 * 60 * 1000)).toISOString(),
+    },
+    {
+      label: 'Under 36 hours in the future',
+      value: new Date(Date.now() + (26 * 60 * 60 * 1000)).toISOString(),
+    },
+    {
+      label: 'Under 25 days in the future',
+      value: new Date(Date.now() + (18 * 24 * 60 * 60 * 1000)).toISOString(),
+    },
+    {
+      label: 'Under 45 days in the future',
+      value: new Date(Date.now() + (35 * 24 * 60 * 60 * 1000)).toISOString(),
+    },
+    {
+      label: 'Under 345 days in the future',
+      value: new Date(Date.now() + (212 * 24 * 60 * 60 * 1000)).toISOString(),
+    },
+    {
+      label: 'Under 545 days in the future',
+      value: new Date(Date.now() + (416 * 24 * 60 * 60 * 1000)).toISOString(),
+    },
+    {
+      label: 'More than 545 days in the future',
+      value: new Date(Date.now() + (900 * 24 * 60 * 60 * 1000)).toISOString(),
     },
   ];
 }

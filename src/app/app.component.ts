@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { getDataSourcesExamples, getFallbackExamples, getOutputExamples } from './examples';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { getDataSourcesExamples, getFutureExamples, getOutputExamples } from './examples';
 
 
 @Component({
@@ -12,15 +12,24 @@ export class AppComponent {
 
   outputExamples = getOutputExamples();
   sourcesExamples = getDataSourcesExamples();
-  fallbackExamples = getFallbackExamples();
+  futureExamples = getFutureExamples();
   customInputValue: any;
+
+  constructor(private readonly cdr: ChangeDetectorRef) {}
 
   loadDataOutputExamples(): void {
     this.outputExamples = getOutputExamples();
+    this.cdr.markForCheck();
   }
 
   loadDataSourcesExamples(): void {
     this.sourcesExamples = getDataSourcesExamples();
+    this.cdr.markForCheck();
+  }
+
+  loadDataFutureExamples(): void {
+    this.futureExamples = getFutureExamples();
+    this.cdr.detectChanges();
   }
 
   onCustomInputChange(event?): void {

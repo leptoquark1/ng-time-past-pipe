@@ -45,7 +45,7 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
    *  and the current.
    */
   transform<T extends TAInput>(value: T): string | T {
-    if (!this.validateInput(value) === false) {
+    if (this.isValidInput(value) === false) {
       return value;
     }
 
@@ -54,15 +54,20 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
       return this.lastResult;
     }
 
+    // The ChangeDetector should not call transform again while the new value is being resolved
     this.changeDetectorRef.detach();
+
     this.lastSeconds = seconds;
 
     const timeDiff = createTimeDiff(seconds);
-    const result = this.lastResult = this.timeDiffGenerator(timeDiff);
+    const result = (this.lastResult = this.timeDiffGenerator(timeDiff));
 
+    // Make sure the update interval refreshed as well
     this.currentPeriod = this.updateIntervalGenerator(timeDiff);
 
+    // Reattach the ChangeDetector so that further changes are being transformed
     this.changeDetectorRef.reattach();
+
     return result;
   }
 
@@ -72,16 +77,16 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
    * @param value
    * @private
    */
-  private validateInput(value: TAInput): boolean {
-    const lastInput = this.lastInput;
+  private isValidInput(value: TAInput): boolean {
+    const validationResult = validateTAInputType(value);
+
+    if (validationResult === false && this.lastInput !== value) {
+      console.warn(`[TimePastPipe] Invalid Input of type ${typeof value} (${value}).`);
+    }
+
     this.lastInput = value;
 
-    if (validateTAInputType(value) === false) {
-      if (lastInput !== value) {
-        console.warn(`[TimePastPipe] Invalid Input of type ${typeof value} (${value}).`);
-      }
-      return false;
-    }
+    return validationResult;
   }
 
   /**

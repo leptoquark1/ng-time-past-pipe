@@ -11,7 +11,7 @@
     <div class="example-container" *ngFor="let example of outputExamples">
       <div class="example-header">
         <h3>{{ example.label }}</h3>
-        <span class="example--source">{{ example.source ? example.source : example.value }}</span>
+        <span class="example--source">{{ example.source ? example.source : (example.value | date: 'medium') }}</span>
       </div>
       <div class="example-wrapper">
         <div class="example--value">{{ example.value | timePast }}</div>
@@ -23,7 +23,7 @@
 <div class="panel">
 
   <h2 id="data-source-types">2. Data Source Types</h2>
-  <button type="button" class="btn btn-reset" title="Resets the examples to 'NOW()'" (click)="loadDataSourcesExamples()">Reset</button>
+  <button type="button" class="btn btn-reset" title="Resets the examples to its initial value" (click)="loadDataSourcesExamples()">Reset</button>
 
 
   <div class="panel--content">
@@ -43,13 +43,16 @@
 
 <div class="panel">
 
-  <h2 id="fallback-results">3. Fallback Results</h2>
+  <h2 id="future-results">3. Times in future</h2>
+  <button type="button" class="btn btn-reset" title="Resets the examples to its initial value" (click)="loadDataFutureExamples()">Reset</button>
 
   <div class="panel--content">
-    <div class="example-container" *ngFor="let example of fallbackExamples">
+    <p class="panel-description">Even dates in the future are supported.</p>
+
+    <div class="example-container" *ngFor="let example of futureExamples">
       <div class="example-header">
         <h3>{{ example.label }}</h3>
-        <span class="example--source">{{ example.source ? example.source : example.value }}</span>
+        <span class="example--source">{{ example.source ? example.source : (example.value | date: 'medium') }}</span>
       </div>
       <div class="example-wrapper">
         <div class="example--value">{{ example.value | timePast }}</div>
