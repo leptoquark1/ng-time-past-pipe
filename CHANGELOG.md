@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/leptoquark1/ng-time-past-pipe/compare/v1.3.2...v2.0.0) (2022-04-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* The `CUSTOM_TIME_DIFF_GENERATOR` is now also
+responsible for processing future events. Therefore, it may happen that
+those are misinterpreted as past events. To distinguish, please use the
+`isFuture` property of the timeDiff parameter.
+
+### Features
+
+* add support for events in the future ([1765e95](https://github.com/leptoquark1/ng-time-past-pipe/commit/1765e95dd04d906acb1738cb2fc5552aaa827094)), closes [#6](https://github.com/leptoquark1/ng-time-past-pipe/issues/6)
+
 ### [1.3.2](https://github.com/leptoquark1/ng-time-past-pipe/compare/v1.3.1...v1.3.2) (2021-12-11)
 
 
