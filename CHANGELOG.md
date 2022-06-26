@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/leptoquark1/ng-time-past-pipe/compare/v2.0.0...v3.0.0) (2022-06-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* `NgTimePastPipeModule` was removed in favor of standalone pipe. Import `TimePastPipe` in your module/component instead.
+With these changes, all following versions of this package will only be compatible with Angular >=v14.0.0. Check previous versions for support of Angular 13 and below.
+
+### Features
+
+* standalone pipe as introduced with angular v14 ([b277811](https://github.com/leptoquark1/ng-time-past-pipe/commit/b277811a41aaf75857efb8b514851d0fcd6dd766))
+
 ## [2.0.0](https://github.com/leptoquark1/ng-time-past-pipe/compare/v1.3.2...v2.0.0) (2022-04-30)
 
 
