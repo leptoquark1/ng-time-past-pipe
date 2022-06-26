@@ -13,7 +13,8 @@
     "test:lib:headless": "cross-env CI=true npm run test:lib",
     "copy:assets": "cp -r README.md CHANGELOG.md LICENSE dist/ng-time-past-pipe",
     "release": "cd projects/ng-time-past-pipe && standard-version --infile ../../CHANGELOG.md",
-    "publish": "npm run build:lib && npm run copy:assets",
+    "prepublish": "npm run build:lib && npm run copy:assets",
+    "publish": "cd dist/ng-time-past-pipe && npm publish",
     "build:playground": "npm run build:lib && ng build --configuration production"
   },
   "private": false,
