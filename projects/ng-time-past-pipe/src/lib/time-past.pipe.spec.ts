@@ -1,12 +1,29 @@
-import { NgTimePastPipePipe } from './time-past.pipe';
-import { ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { TimePastPipe, NgTimePastPipePipe } from './time-past.pipe';
+import {
+  ChangeDetectorRef,
+  Component,
+  EmbeddedViewRef,
+  Input,
+  OnInit,
+  ViewChild,
+  ViewChildren,
+  ViewRef,
+} from '@angular/core';
 import { interval } from 'rxjs';
 import { defaultTimeDiffGenerator, TimeDiff } from './time-diff';
 import { defaultUpdateIntervalGenerator } from './time-interval';
 import * as timePast from './time-past';
 import * as timeDiff from './time-diff';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-describe('NgTimePastPipePipe', () => {
+@Component({
+  template: `<span id="testOutput">{{ date | timePast }}</span>`,
+})
+class TestComponent {
+  @Input() date;
+}
+
+describe('TimePastPipe', () => {
   const changeDetectorRefSpy = jasmine.createSpyObj('changeDetectorRef', [
     'markForCheck',
     'detach',
@@ -20,10 +37,10 @@ describe('NgTimePastPipePipe', () => {
     'updateIntervalGenerator',
     defaultUpdateIntervalGenerator
   );
-  let pipe: NgTimePastPipePipe;
+  let pipe: TimePastPipe;
 
   beforeEach(() => {
-    pipe = new NgTimePastPipePipe(
+    pipe = new TimePastPipe(
       changeDetectorRefSpy as ChangeDetectorRef,
       interval(1000),
       timeDiffGeneratorSpy,
@@ -145,6 +162,63 @@ describe('NgTimePastPipePipe', () => {
 
       // @ts-ignore
       expect(pipe.lastInput).toEqual(input);
+    });
+  });
+
+  describe('Standalone Component', () => {
+    let fixture: ComponentFixture<TestComponent>;
+    let component: TestComponent;
+
+    beforeEach(async () => {
+      jasmine.clock().mockDate(new Date('2022-06-26T10:00:55Z'));
+
+      TestBed.configureTestingModule({
+        imports: [TimePastPipe],
+        declarations: [TestComponent],
+      });
+
+      fixture = TestBed.createComponent(TestComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('can be declared by pipe class import', async () => {
+      const outputElement = fixture.nativeElement.querySelector('#testOutput');
+
+      component.date = new Date('2022-06-26T10:00:00Z');
+      fixture.detectChanges();
+
+      expect(outputElement.textContent).toEqual('55 seconds ago');
+
+      component.date = new Date('2022-06-26T08:12:55Z');
+      fixture.detectChanges();
+
+      expect(outputElement.textContent).toEqual('2 hours ago');
+    });
+  });
+
+  describe('Classname deprecation', () => {
+    let fixture: ComponentFixture<TestComponent>;
+    let component: TestComponent;
+
+    beforeEach(async () => {
+      jasmine.clock().mockDate(new Date('2022-06-26T10:00:05Z'));
+      await TestBed.configureTestingModule({
+        imports: [NgTimePastPipePipe],
+        declarations: [TestComponent],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(TestComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('should be exported as well', async () => {
+      const outputElement = fixture.nativeElement.querySelector('#testOutput');
+
+      component.date = new Date('2022-06-26T10:00:15Z');
+      fixture.detectChanges();
+
+      expect(component).toBeDefined();
+      expect(outputElement.textContent).toEqual('in 10 seconds');
     });
   });
 });

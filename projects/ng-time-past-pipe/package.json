@@ -7,7 +7,10 @@
     "access": "public"
   },
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.1"
+  },
+  "peerDependencies": {
+    "@angular/core": ">=14.0.0"
   },
   "repository": {
     "type": "git",
@@ -35,6 +38,12 @@
     "angular",
     "angular 2",
     "Angular2",
-    "Angular4"
+    "Angular4",
+    "Angular14",
+    "future-time",
+    "countdown",
+    "date-to-string",
+    "NgTimePastPipe",
+    "TimePastPipe"
   ]
 }

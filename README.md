@@ -1,4 +1,4 @@
-# NgTimePastPipe
+# Angular TimePast Pipe <small>NgTimePastPipe</small>
 
 [![npm](https://img.shields.io/npm/v/ng-time-past-pipe)](https://www.npmjs.com/package/ng-time-past-pipe)
 ![GitHub issues](https://img.shields.io/github/issues/leptoquark1/ng-time-past-pipe)
@@ -71,15 +71,28 @@ npm i ng-time-past-pipe
 ## Usage
 
 ```ts
-import { NgTimePastPipeModule } from 'ng-time-past-pipe';
+import { TimePastPipe } from 'ng-time-past-pipe';
 
 @NgModule({
-  imports: [
-    NgTimePastPipeModule
-  ]
+  imports: [TimePastPipe]
 })
 export class FeatureModule {}
 ```
+
+<details><summary>Angular 13 and below</summary>
+<p>
+
+  ```ts
+  import { NgTimePastPipeModule } from 'ng-time-past-pipe';
+  
+  @NgModule({
+  imports: [NgTimePastPipeModule]
+  })
+  export class FeatureModule {}
+  ```
+
+</p>
+</details>
 
 ### Using the Pipe
 
@@ -121,7 +134,7 @@ You can override the default one by providing your own custom generator using th
 import {
   CUSTOM_TIME_DIFF_GENERATOR,
   defaultTimeDiffGenerator,
-  NgTimePastPipeModule,
+  TimePastPipe,
   TimeDiffGenerator
 } from 'ng-time-past-pipe';
 
@@ -139,7 +152,7 @@ export const timeDiffGenerator: TimeDiffGenerator = (diff): string => {
   providers: [
     { provide: CUSTOM_TIME_DIFF_GENERATOR, useValue: timeDiffGenerator },
   ],
-  imports: [CommonModule, NgTimePastPipeModule],
+  imports: [CommonModule, TimePastPipe],
   exports: [TestComponent]
 })
 export class TestModule {}
@@ -165,11 +178,11 @@ If the Change-Detector cycles are no longer sufficient, then you should adapt th
 Just as with `TimeDiffGenerator`, you can provide the `CUSTOM_UPDATE_INTERVAL_GENERATOR` injection token with an alternative Generator to accomplish this:
 
 ```typescript
-import { CUSTOM_UPDATE_INTERVAL_GENERATOR, NgTimePastPipeModule } from 'ng-time-past-pipe';
+import { CUSTOM_UPDATE_INTERVAL_GENERATOR, TimePastPipe } from 'ng-time-past-pipe';
 
 @NgModule({
   providers: [{ provide: CUSTOM_UPDATE_INTERVAL_GENERATOR, useValue: updateIntervalGenerator }],
-  imports: [NgTimePastPipeModule],
+  imports: [TimePastPipe],
 })
 export class TestModule {}
 ```
