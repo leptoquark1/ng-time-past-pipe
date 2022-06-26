@@ -1,16 +1,30 @@
-import { ChangeDetectorRef, Inject, OnDestroy, Pipe, PipeTransform } from '@angular/core';
-import { createTimeDiff, TIME_DIFF_GENERATOR, TimeDiffGenerator } from './time-diff';
-import { UPDATE_INTERVAL_GENERATOR, UpdateIntervalGenerator } from './time-interval';
+import {
+  ChangeDetectorRef,
+  Inject,
+  OnDestroy,
+  Pipe,
+  PipeTransform,
+} from '@angular/core';
+import {
+  createTimeDiff,
+  TIME_DIFF_GENERATOR,
+  TimeDiffGenerator,
+} from './time-diff';
+import {
+  UPDATE_INTERVAL_GENERATOR,
+  UpdateIntervalGenerator,
+} from './time-interval';
 import { parseInputValue, TAInput, validateTAInputType } from './time-past';
 import { TIME_PAST_TICKER } from './ticker';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 @Pipe({
+  standalone: true,
   name: 'timePast',
   pure: false,
 })
-export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
+export class TimePastPipe implements PipeTransform, OnDestroy {
   private lastInput: any;
   private lastSeconds: number;
   private lastResult: string;
@@ -18,7 +32,7 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
   private currentPeriod = 1;
   private readonly intervalTimer = this.ticker.pipe(
     filter((tick) => tick % this.currentPeriod === 0),
-    map(tick => tick / this.currentPeriod),
+    map((tick) => tick / this.currentPeriod)
   );
   private readonly intervalSubscription: Subscription;
 
@@ -28,8 +42,10 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
     @Inject(TIME_PAST_TICKER) private readonly ticker: Observable<number>,
-    @Inject(TIME_DIFF_GENERATOR) private readonly timeDiffGenerator: TimeDiffGenerator,
-    @Inject(UPDATE_INTERVAL_GENERATOR) private readonly updateIntervalGenerator: UpdateIntervalGenerator,
+    @Inject(TIME_DIFF_GENERATOR)
+    private readonly timeDiffGenerator: TimeDiffGenerator,
+    @Inject(UPDATE_INTERVAL_GENERATOR)
+    private readonly updateIntervalGenerator: UpdateIntervalGenerator
   ) {
     this.intervalSubscription = this.intervalTimer.subscribe(() => {
       this.changeDetectorRef.markForCheck();
@@ -81,7 +97,9 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
     const validationResult = validateTAInputType(value);
 
     if (validationResult === false && this.lastInput !== value) {
-      console.warn(`[TimePastPipe] Invalid Input of type ${typeof value} (${value}).`);
+      console.warn(
+        `[TimePastPipe] Invalid Input of type ${typeof value} (${value}).`
+      );
     }
 
     this.lastInput = value;
@@ -98,3 +116,8 @@ export class NgTimePastPipePipe implements PipeTransform, OnDestroy {
     }
   }
 }
+
+/**
+ * @deprecated Use TimePastPipe instead
+ */
+export const NgTimePastPipePipe = TimePastPipe;
