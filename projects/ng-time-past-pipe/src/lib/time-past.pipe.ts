@@ -25,6 +25,7 @@ import { filter, map } from 'rxjs/operators';
   pure: false,
 })
 export class TimePastPipe implements PipeTransform, OnDestroy {
+  private initialSeconds: any;
   private lastInput: any;
   private lastSeconds: number;
   private lastResult: string;
@@ -56,17 +57,20 @@ export class TimePastPipe implements PipeTransform, OnDestroy {
    * Transform anything that can be parsed to a Date in the past, to a string that represent the relative
    *  time that has been passed between now and this point of time.
    *
-   * @param value A value that can be parsed to a Date in the past
+   * @param value A value that can be parsed to a Date in the past or future
+   * @param overflow Overflow to time in past when initial date was in future
    * @return The textual representation of the time that has been passed between the given Date
    *  and the current.
    */
-  transform<T extends TAInput>(value: T): string | T {
+  transform<T extends TAInput>(value: T, overflow = true): string | T {
     if (this.isValidInput(value) === false) {
       return value;
     }
 
     const seconds = parseInputValue(value);
-    if (this.lastSeconds === seconds) {
+    this.initialSeconds ||= seconds;
+
+    if (this.lastSeconds === seconds || (overflow === false && this.initialSeconds < 0 && seconds > 0)) {
       return this.lastResult;
     }
 

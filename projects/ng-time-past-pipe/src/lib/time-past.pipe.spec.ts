@@ -17,10 +17,11 @@ import * as timeDiff from './time-diff';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 @Component({
-  template: `<span id="testOutput">{{ date | timePast }}</span>`,
+  template: `<span id="testOutput">{{ date | timePast: overflow }}</span>`,
 })
 class TestComponent {
   @Input() date;
+  @Input() overflow = true;
 }
 
 describe('TimePastPipe', () => {
@@ -219,6 +220,50 @@ describe('TimePastPipe', () => {
 
       expect(component).toBeDefined();
       expect(outputElement.textContent).toEqual('in 10 seconds');
+    });
+  });
+
+  describe('Overflow pipe parameter', () => {
+    let fixture: ComponentFixture<TestComponent>;
+    let component: TestComponent;
+
+    beforeEach(async () => {
+      jasmine.clock().mockDate(new Date('2022-06-26T10:50:15Z'));
+
+      await TestBed.configureTestingModule({
+        imports: [TimePastPipe],
+        declarations: [TestComponent],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(TestComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('should stop with last output when countdown is done', async () => {
+      const outputElement = fixture.nativeElement.querySelector('#testOutput');
+
+      component.date = new Date('2022-06-26T11:05:15Z');
+      component.overflow = false;
+      fixture.detectChanges();
+      jasmine.clock().mockDate(new Date('2022-06-26T11:05:15Z'));
+      fixture.detectChanges();
+      jasmine.clock().mockDate(new Date('2022-06-26T11:10:15Z'));
+      fixture.detectChanges();
+
+      expect(component).toBeDefined();
+      expect(outputElement.textContent).toEqual('about now');
+    });
+    it('should behave normally when parameter is true or skipped', async () => {
+      const outputElement = fixture.nativeElement.querySelector('#testOutput');
+
+      component.date = new Date('2022-06-26T11:05:15Z');
+      component.overflow = true;
+      fixture.detectChanges();
+      jasmine.clock().mockDate(new Date('2022-06-26T11:10:15Z'));
+      fixture.detectChanges();
+
+      expect(component).toBeDefined();
+      expect(outputElement.textContent).toEqual('5 minutes ago');
     });
   });
 });

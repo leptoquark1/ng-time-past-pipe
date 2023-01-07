@@ -2,6 +2,7 @@ export interface Example {
   label: string;
   source?: string;
   value: any;
+  overflow?: boolean;
 }
 
 export function getOutputExamples(): Example[] {
@@ -128,6 +129,11 @@ export function getFutureExamples(): Example[] {
     {
       label: 'More than 545 days in the future',
       value: new Date(Date.now() + (900 * 24 * 60 * 60 * 1000)).toISOString(),
+    },
+    {
+      label: 'Countdown but stop when current time is reached',
+      value: new Date(Date.now() + (10 * 1000)).toISOString(),
+      overflow: false,
     },
   ];
 }

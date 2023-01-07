@@ -100,6 +100,12 @@ export class FeatureModule {}
 <h2>This Page was rendered: {{ date1 | timePast }}</h2>
 ```
 
+#### Prevent overflow from countdown to a time in the past
+
+```angular2html
+<h2>This Page was rendered: {{ date1 | timePast: false }}</h2>
+```
+
 ### Using the Service
 
 ```typescript
