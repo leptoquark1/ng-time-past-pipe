@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/leptoquark1/ng-time-past-pipe/compare/v3.0.0...v3.1.0) (2023-01-07)
+
+
+### Features
+
+* introduce pipe parameter to control countdown overflow behaviour ([f95d5ce](https://github.com/leptoquark1/ng-time-past-pipe/commit/f95d5ce75000c73b986bd0aee86ae7ce00dc94f5))
+
 ## [3.0.0](https://github.com/leptoquark1/ng-time-past-pipe/compare/v2.0.0...v3.0.0) (2022-06-26)
 
 
