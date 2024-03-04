@@ -2,13 +2,13 @@ import { TestBed } from '@angular/core/testing';
 import { TimePastService } from './time-past.service';
 import {
   defaultTimeDiffGenerator,
-  TIME_DIFF_GENERATOR,
   TimeDiff,
   TimeDiffGenerator,
 } from './time-diff';
 
 import * as timePast from './time-past';
 import * as timeDiff from './time-diff';
+import { CUSTOM_TIME_DIFF_GENERATOR } from 'ng-time-past-pipe';
 
 describe('TimePastService injection', () => {
   let service: TimePastService;
@@ -35,7 +35,7 @@ describe('@timePast', () => {
     TestBed.configureTestingModule({
       providers: [
         TimePastService,
-        { provide: TIME_DIFF_GENERATOR, useValue: generatorSpy },
+        { provide: CUSTOM_TIME_DIFF_GENERATOR, useValue: generatorSpy },
       ],
     });
 
@@ -46,12 +46,12 @@ describe('@timePast', () => {
 
   describe('input validation', () => {
     let timeDiffGeneratorSpy: jasmine.SpyObj<TimeDiffGenerator>;
-    let validateTAInputTypeSpy: jasmine.Spy<(...args) => boolean>;
+    let validateTAInputTypeSpy: jasmine.Spy<(...args: unknown[]) => boolean>;
 
     beforeAll(() => {
       validateTAInputTypeSpy = spyOn(timePast, 'validateTAInputType');
       timeDiffGeneratorSpy = TestBed.inject(
-        TIME_DIFF_GENERATOR
+        CUSTOM_TIME_DIFF_GENERATOR
       ) as jasmine.SpyObj<TimeDiffGenerator>;
     });
 
@@ -78,9 +78,9 @@ describe('@timePast', () => {
   });
 
   describe('further modules called', () => {
-    let validateTAInputTypeSpy: jasmine.Spy<(...args) => boolean>;
-    let parseInputValueSpy: jasmine.Spy<(...args) => number>;
-    let createTimeDiffSpy: jasmine.Spy<(...args) => TimeDiff>;
+    let validateTAInputTypeSpy: jasmine.Spy<(...args: unknown[]) => boolean>;
+    let parseInputValueSpy: jasmine.Spy<(...args: unknown[]) => number>;
+    let createTimeDiffSpy: jasmine.Spy<(...args: unknown[]) => TimeDiff>;
 
     beforeAll(() => {
       validateTAInputTypeSpy = spyOn(timePast, 'validateTAInputType');

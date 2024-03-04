@@ -1,7 +1,7 @@
 export interface Example {
   label: string;
   source?: string;
-  value: any;
+  value: Date | string | number;
   overflow?: boolean;
 }
 

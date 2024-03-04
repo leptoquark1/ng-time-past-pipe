@@ -5,7 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng run build-playground",
+    "start:lib": "ng build NgTimePastPipe --watch",
+    "build": "ng run build:playground",
     "test": "ng test",
     "lint": "ng lint",
     "build:lib": "ng build NgTimePastPipe --configuration production",

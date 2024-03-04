@@ -1,17 +1,10 @@
 import { TimePastPipe, NgTimePastPipePipe } from './time-past.pipe';
 import {
-  ChangeDetectorRef,
   Component,
-  EmbeddedViewRef,
   Input,
-  OnInit,
-  ViewChild,
-  ViewChildren,
-  ViewRef,
 } from '@angular/core';
-import { interval } from 'rxjs';
-import { defaultTimeDiffGenerator, TimeDiff } from './time-diff';
-import { defaultUpdateIntervalGenerator } from './time-interval';
+import { CUSTOM_TIME_DIFF_GENERATOR, defaultTimeDiffGenerator, TimeDiff } from './time-diff';
+import { CUSTOM_UPDATE_INTERVAL_GENERATOR, defaultUpdateIntervalGenerator } from './time-interval';
 import * as timePast from './time-past';
 import * as timeDiff from './time-diff';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -20,7 +13,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
   template: `<span id="testOutput">{{ date | timePast: overflow }}</span>`,
 })
 class TestComponent {
-  @Input() date;
+  @Input() date?: Date | string | number;
   @Input() overflow = true;
 }
 
@@ -41,12 +34,25 @@ describe('TimePastPipe', () => {
   let pipe: TimePastPipe;
 
   beforeEach(() => {
-    pipe = new TimePastPipe(
-      changeDetectorRefSpy as ChangeDetectorRef,
-      interval(1000),
-      timeDiffGeneratorSpy,
-      updateIntervalGeneratorSpy
-    );
+    const testModule = TestBed.configureTestingModule({
+      imports: [TimePastPipe],
+      providers: [
+        {
+          provide: TimePastPipe,
+          useValue: changeDetectorRefSpy,
+        },
+        {
+          provide: CUSTOM_TIME_DIFF_GENERATOR,
+          useValue: timeDiffGeneratorSpy,
+        },
+        {
+          provide: CUSTOM_UPDATE_INTERVAL_GENERATOR,
+          useValue: updateIntervalGeneratorSpy,
+        },
+      ],
+    });
+
+    pipe = testModule.inject(TimePastPipe);
   });
 
   describe('@ngOnDestroy', () => {

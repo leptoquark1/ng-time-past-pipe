@@ -1,4 +1,4 @@
-import { inject, InjectFlags, InjectionToken } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 
 /**
  * Represents the Time Difference in the different time units
@@ -126,24 +126,6 @@ export const getFutureDiffString = (diff: TimeDiff): string => {
 
   return 'in ' + years + ' years';
 };
-
-/**
- * Provides the TimeDiffGenerator preferring a custom provider for internal usage
- *
- * @internal
- */
-export const TIME_DIFF_GENERATOR = new InjectionToken<TimeDiffGenerator>(
-  'Time Diff Generator',
-  {
-    factory: () => {
-      const customGenerator = inject(
-        CUSTOM_TIME_DIFF_GENERATOR,
-        InjectFlags.Optional
-      );
-      return customGenerator ?? defaultTimeDiffGenerator;
-    },
-  }
-);
 
 /**
  * TimeDiff Factory

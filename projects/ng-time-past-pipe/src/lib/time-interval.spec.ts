@@ -1,7 +1,6 @@
 import {
   CUSTOM_UPDATE_INTERVAL_GENERATOR,
   defaultUpdateIntervalGenerator,
-  UPDATE_INTERVAL_GENERATOR,
 } from './time-interval';
 import { TestBed } from '@angular/core/testing';
 import { TimeDiff } from './time-diff';
@@ -61,7 +60,7 @@ describe('defaultUpdateIntervalGenerator', () => {
   });
 });
 
-describe('UPDATE_INTERVAL_GENERATOR & CUSTOM_UPDATE_INTERVAL_GENERATOR', () => {
+describe('CUSTOM_UPDATE_INTERVAL_GENERATOR', () => {
   const TEST_SERVICE_1 = new InjectionToken('TestService1');
   const TEST_SERVICE_2 = new InjectionToken('TestService2');
   const updateIntervalGeneratorFactory = (generator) => ({ generator });
@@ -75,18 +74,16 @@ describe('UPDATE_INTERVAL_GENERATOR & CUSTOM_UPDATE_INTERVAL_GENERATOR', () => {
           {
             provide: TEST_SERVICE_1,
             useFactory: updateIntervalGeneratorFactory,
-            deps: [UPDATE_INTERVAL_GENERATOR],
           },
           {
             provide: TEST_SERVICE_2,
             useFactory: updateIntervalGeneratorFactory,
-            deps: [UPDATE_INTERVAL_GENERATOR],
           },
         ],
       });
 
       updateIntervalGeneratorInstance = TestBed.inject(
-        UPDATE_INTERVAL_GENERATOR
+        CUSTOM_UPDATE_INTERVAL_GENERATOR
       );
     });
 
@@ -116,23 +113,21 @@ describe('UPDATE_INTERVAL_GENERATOR & CUSTOM_UPDATE_INTERVAL_GENERATOR', () => {
           {
             provide: TEST_SERVICE_1,
             useFactory: updateIntervalGeneratorFactory,
-            deps: [UPDATE_INTERVAL_GENERATOR],
           },
           {
             provide: TEST_SERVICE_2,
             useFactory: updateIntervalGeneratorFactory,
-            deps: [UPDATE_INTERVAL_GENERATOR],
           },
         ],
       });
 
       updateIntervalGeneratorInstance = TestBed.inject(
-        UPDATE_INTERVAL_GENERATOR
+        CUSTOM_UPDATE_INTERVAL_GENERATOR
       );
     });
 
     it('should not be the original method', () => {
-      expect(TestBed.inject(UPDATE_INTERVAL_GENERATOR)).not.toBe(
+      expect(TestBed.inject(CUSTOM_UPDATE_INTERVAL_GENERATOR)).not.toBe(
         defaultUpdateIntervalGenerator
       );
     });
@@ -147,7 +142,7 @@ describe('UPDATE_INTERVAL_GENERATOR & CUSTOM_UPDATE_INTERVAL_GENERATOR', () => {
     });
 
     it('should call the custom provided method', () => {
-      const customInstance = TestBed.inject(UPDATE_INTERVAL_GENERATOR);
+      const customInstance = TestBed.inject(CUSTOM_UPDATE_INTERVAL_GENERATOR);
 
       expect(customInstance(zeroTimeDiff)).toEqual(0);
       expect(spyInstance).toHaveBeenCalled();

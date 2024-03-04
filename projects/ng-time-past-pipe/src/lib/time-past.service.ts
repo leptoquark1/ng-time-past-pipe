@@ -1,8 +1,8 @@
-import { Inject, Injectable } from '@angular/core';
-import { createTimeDiff, TIME_DIFF_GENERATOR, TimeDiffGenerator } from './time-diff';
+import { inject, Injectable, InjectFlags } from '@angular/core';
+import { createTimeDiff, CUSTOM_TIME_DIFF_GENERATOR, defaultTimeDiffGenerator } from './time-diff';
 import { parseInputValue, TAInput, validateTAInputType } from './time-past';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 /**
  * Public TimePast Service Class
  *
@@ -10,7 +10,7 @@ import { parseInputValue, TAInput, validateTAInputType } from './time-past';
  * @api
  */
 export class TimePastService {
-  constructor(@Inject(TIME_DIFF_GENERATOR) private readonly timeDiffGenerator: TimeDiffGenerator) { }
+  private readonly timeDiffGenerator = inject(CUSTOM_TIME_DIFF_GENERATOR, InjectFlags.Optional) ?? defaultTimeDiffGenerator;
 
   /**
    * Transform anything that can be parsed to a Date in the past, to a string that represent the relative
@@ -20,7 +20,7 @@ export class TimePastService {
    * @return The textual representation of the time that has been passed between the given Date
    *  and the current.
    */
-  timePast(value: TAInput): string {
+  timePast(value: TAInput): undefined | string {
     if (validateTAInputType(value) === false) {
       return undefined;
     }

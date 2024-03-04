@@ -8,12 +8,12 @@ import { getDataSourcesExamples, getFutureExamples, getOutputExamples } from './
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  private lastCustomInputElement;
+  private lastCustomInputElement?: HTMLInputElement;
 
   outputExamples = getOutputExamples();
   sourcesExamples = getDataSourcesExamples();
   futureExamples = getFutureExamples();
-  customInputValue: any;
+  customInputValue: Date | string | number = '2024-06-26T00:00:00.00Z';
 
   constructor(private readonly cdr: ChangeDetectorRef) {}
 
@@ -32,13 +32,17 @@ export class AppComponent {
     this.cdr.detectChanges();
   }
 
-  onCustomInputChange(event?): void {
+  onCustomInputChange(event?: Event): void {
     if (!event && !this.lastCustomInputElement) {
       return;
     }
-    if (event && event.target) {
-      this.lastCustomInputElement = event.target;
+
+    if (event?.target) {
+      this.lastCustomInputElement = event.target as HTMLInputElement;
     }
-    this.customInputValue = (new Date(this.lastCustomInputElement.value)).toISOString();
+
+    if (this.lastCustomInputElement) {
+      this.customInputValue = new Date(this.lastCustomInputElement.value).toISOString();
+    }
   }
 }
