@@ -4,6 +4,7 @@
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
@@ -20,10 +21,12 @@
         "dist/ng-time-past-pipe/ng-time-past-pipe",
         "dist/ng-time-past-pipe"
       ]
-    }
+    },
+    "strict": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
+    "strictInjectionParameters": true,
+    "strictTemplates": true
   }
 }

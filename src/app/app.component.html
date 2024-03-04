@@ -62,18 +62,42 @@
   </div>
 </div>
 
+
+
 <div class="panel">
 
-  <h2 id="try-it-yourself">4. Try it yourself</h2>
+  <h2 id="future-results">4. Customise output / Internationalisation (i18n)</h2>
+  <button type="button" class="btn btn-reset" title="Resets the examples to its initial value" (click)="loadDataOutputExamples()">Reset</button>
+
+  <div class="panel--content">
+    <p class="panel-description"></p>
+
+    <div class="example-container" *ngFor="let example of outputExamples">
+      <div class="example-header">
+        <h3>{{ example.label }}</h3>
+        <span class="example--source">{{ example.source ? example.source : (example.value | date: 'medium') }}</span>
+      </div>
+      <div class="example-wrapper">
+        <div class="example--value"><app-i18n-de [date]="example.value"></app-i18n-de></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+
+  <h2 id="try-it-yourself">5. Try it yourself</h2>
   <button type="button" class="btn btn-reset" title="Resets the result to you input" (click)="onCustomInputChange()">Reset</button>
 
   <div class="panel--content">
+    <p class="panel-description"></p>
+
     <div class="input-container">
       <h3>Input</h3>
 
       <div class="input-wrapper">
         <label for="custom-input">DateTime</label>
-        <input id="custom-input" type="datetime-local" (change)="onCustomInputChange($event)">
+        <input id="custom-input" type="datetime-local" value="2024-06-26T00:00:00.00" (change)="onCustomInputChange($event)">
       </div>
     </div>
 

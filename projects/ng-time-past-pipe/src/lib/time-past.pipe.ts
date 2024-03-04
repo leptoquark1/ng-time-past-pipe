@@ -1,22 +1,8 @@
-import {
-  ChangeDetectorRef,
-  Inject,
-  OnDestroy,
-  Pipe,
-  PipeTransform,
-} from '@angular/core';
-import {
-  createTimeDiff,
-  TIME_DIFF_GENERATOR,
-  TimeDiffGenerator,
-} from './time-diff';
-import {
-  UPDATE_INTERVAL_GENERATOR,
-  UpdateIntervalGenerator,
-} from './time-interval';
+import { ChangeDetectorRef, inject, InjectFlags, OnDestroy, Pipe, PipeTransform, } from '@angular/core';
+import { createTimeDiff, CUSTOM_TIME_DIFF_GENERATOR, defaultTimeDiffGenerator, } from './time-diff';
+import { CUSTOM_UPDATE_INTERVAL_GENERATOR, defaultUpdateIntervalGenerator } from './time-interval';
 import { parseInputValue, TAInput, validateTAInputType } from './time-past';
 import { TIME_PAST_TICKER } from './ticker';
-import { Observable, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 @Pipe({
@@ -25,33 +11,26 @@ import { filter, map } from 'rxjs/operators';
   pure: false,
 })
 export class TimePastPipe implements PipeTransform, OnDestroy {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+  private readonly ticker = inject(TIME_PAST_TICKER);
+  private readonly timeDiffGenerator =
+    inject(CUSTOM_TIME_DIFF_GENERATOR, InjectFlags.Optional) ?? defaultTimeDiffGenerator;
+  private readonly updateIntervalGenerator =
+    inject(CUSTOM_UPDATE_INTERVAL_GENERATOR, InjectFlags.Optional) ?? defaultUpdateIntervalGenerator;
+
   private initialSeconds: any;
   private lastInput: any;
-  private lastSeconds: number;
-  private lastResult: string;
+  private lastSeconds?: number;
+  private lastResult?: string;
 
   private currentPeriod = 1;
   private readonly intervalTimer = this.ticker.pipe(
     filter((tick) => tick % this.currentPeriod === 0),
     map((tick) => tick / this.currentPeriod)
   );
-  private readonly intervalSubscription: Subscription;
-
-  /**
-   * TimePastPipe Class Constructor
-   */
-  constructor(
-    private readonly changeDetectorRef: ChangeDetectorRef,
-    @Inject(TIME_PAST_TICKER) private readonly ticker: Observable<number>,
-    @Inject(TIME_DIFF_GENERATOR)
-    private readonly timeDiffGenerator: TimeDiffGenerator,
-    @Inject(UPDATE_INTERVAL_GENERATOR)
-    private readonly updateIntervalGenerator: UpdateIntervalGenerator
-  ) {
-    this.intervalSubscription = this.intervalTimer.subscribe(() => {
-      this.changeDetectorRef.markForCheck();
-    });
-  }
+  private readonly intervalSubscription = this.intervalTimer.subscribe(() =>
+    this.changeDetectorRef.markForCheck()
+  );
 
   /**
    * Transform anything that can be parsed to a Date in the past, to a string that represent the relative
@@ -62,7 +41,7 @@ export class TimePastPipe implements PipeTransform, OnDestroy {
    * @return The textual representation of the time that has been passed between the given Date
    *  and the current.
    */
-  transform<T extends TAInput>(value: T, overflow = true): string | T {
+  transform<T extends TAInput>(value: T, overflow = true): undefined | string | T {
     if (this.isValidInput(value) === false) {
       return value;
     }

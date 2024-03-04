@@ -14,4 +14,6 @@ export {
 
 export { TAInput } from './lib/time-past';
 
+export { TimeDiff } from './lib/time-diff';
+
 export * from './lib/time-past.service';

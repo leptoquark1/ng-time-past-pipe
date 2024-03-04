@@ -1,11 +1,10 @@
 import {
   CUSTOM_UPDATE_INTERVAL_GENERATOR,
+  UpdateIntervalGenerator,
   defaultUpdateIntervalGenerator,
-  UPDATE_INTERVAL_GENERATOR,
 } from './time-interval';
-import { TestBed } from '@angular/core/testing';
+import { getTestBed } from '@angular/core/testing';
 import { TimeDiff } from './time-diff';
-import { InjectionToken } from '@angular/core';
 
 const zeroTimeDiff: TimeDiff = {
   seconds: 0,
@@ -61,96 +60,33 @@ describe('defaultUpdateIntervalGenerator', () => {
   });
 });
 
-describe('UPDATE_INTERVAL_GENERATOR & CUSTOM_UPDATE_INTERVAL_GENERATOR', () => {
-  const TEST_SERVICE_1 = new InjectionToken('TestService1');
-  const TEST_SERVICE_2 = new InjectionToken('TestService2');
-  const updateIntervalGeneratorFactory = (generator) => ({ generator });
+describe('CUSTOM_UPDATE_INTERVAL_GENERATOR', () => {
+  let updateIntervalGenerator: jasmine.Spy<UpdateIntervalGenerator>;
+  let customUpdateIntervalGeneratorMock: jasmine.Spy;
 
-  describe('Instance Default', () => {
-    let updateIntervalGeneratorInstance: (diff: TimeDiff) => number;
-
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [
-          {
-            provide: TEST_SERVICE_1,
-            useFactory: updateIntervalGeneratorFactory,
-            deps: [UPDATE_INTERVAL_GENERATOR],
-          },
-          {
-            provide: TEST_SERVICE_2,
-            useFactory: updateIntervalGeneratorFactory,
-            deps: [UPDATE_INTERVAL_GENERATOR],
-          },
-        ],
-      });
-
-      updateIntervalGeneratorInstance = TestBed.inject(
-        UPDATE_INTERVAL_GENERATOR
-      );
+  beforeEach(() => {
+    getTestBed().configureTestingModule({
+      providers: [],
     });
 
-    it('should always return the same object', () => {
-      expect((TestBed.inject(TEST_SERVICE_1) as { generator }).generator).toBe(
-        updateIntervalGeneratorInstance
-      );
-      expect((TestBed.inject(TEST_SERVICE_2) as { generator }).generator).toBe(
-        updateIntervalGeneratorInstance
-      );
-    });
-  });
-
-  describe('Instance Override', () => {
-    let updateIntervalGeneratorInstance: (diff: TimeDiff) => number;
-    const spyInstance = jasmine
+    updateIntervalGenerator = jasmine.createSpy(
+      'updateIntervalGenerator',
+      defaultUpdateIntervalGenerator
+    );
+    customUpdateIntervalGeneratorMock = jasmine
       .createSpy('customUpdateIntervalGeneratorMock')
       .and.callFake(() => 0);
+  });
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [
-          {
-            provide: CUSTOM_UPDATE_INTERVAL_GENERATOR,
-            useValue: spyInstance,
-          },
-          {
-            provide: TEST_SERVICE_1,
-            useFactory: updateIntervalGeneratorFactory,
-            deps: [UPDATE_INTERVAL_GENERATOR],
-          },
-          {
-            provide: TEST_SERVICE_2,
-            useFactory: updateIntervalGeneratorFactory,
-            deps: [UPDATE_INTERVAL_GENERATOR],
-          },
-        ],
-      });
+  afterEach(() => {
+    getTestBed().resetTestingModule();
+  });
 
-      updateIntervalGeneratorInstance = TestBed.inject(
-        UPDATE_INTERVAL_GENERATOR
-      );
-    });
-
-    it('should not be the original method', () => {
-      expect(TestBed.inject(UPDATE_INTERVAL_GENERATOR)).not.toBe(
-        defaultUpdateIntervalGenerator
-      );
-    });
-
-    it('should always return the same object', () => {
-      expect((TestBed.inject(TEST_SERVICE_1) as { generator }).generator).toBe(
-        updateIntervalGeneratorInstance
-      );
-      expect((TestBed.inject(TEST_SERVICE_2) as { generator }).generator).toBe(
-        updateIntervalGeneratorInstance
-      );
-    });
-
-    it('should call the custom provided method', () => {
-      const customInstance = TestBed.inject(UPDATE_INTERVAL_GENERATOR);
-
-      expect(customInstance(zeroTimeDiff)).toEqual(0);
-      expect(spyInstance).toHaveBeenCalled();
-    });
+  it('should not inject any instance when not provided', () => {
+    const updateIntervalGeneratorInstance = getTestBed().inject(
+      CUSTOM_UPDATE_INTERVAL_GENERATOR,
+      null,
+    );
+    expect(updateIntervalGeneratorInstance).toBeNull();
   });
 });
