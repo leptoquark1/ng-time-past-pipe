@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, inject, InjectFlags, OnDestroy, Pipe, PipeTransform, } from '@angular/core';
+import { ChangeDetectorRef, inject, OnDestroy, Pipe, PipeTransform, } from '@angular/core';
 import { createTimeDiff, CUSTOM_TIME_DIFF_GENERATOR, defaultTimeDiffGenerator, } from './time-diff';
 import { CUSTOM_UPDATE_INTERVAL_GENERATOR, defaultUpdateIntervalGenerator } from './time-interval';
 import { parseInputValue, TAInput, validateTAInputType } from './time-past';
@@ -14,9 +14,9 @@ export class TimePastPipe implements PipeTransform, OnDestroy {
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly ticker = inject(TIME_PAST_TICKER);
   private readonly timeDiffGenerator =
-    inject(CUSTOM_TIME_DIFF_GENERATOR, InjectFlags.Optional) ?? defaultTimeDiffGenerator;
+    inject(CUSTOM_TIME_DIFF_GENERATOR, { optional: true }) ?? defaultTimeDiffGenerator;
   private readonly updateIntervalGenerator =
-    inject(CUSTOM_UPDATE_INTERVAL_GENERATOR, InjectFlags.Optional) ?? defaultUpdateIntervalGenerator;
+    inject(CUSTOM_UPDATE_INTERVAL_GENERATOR, { optional: true }) ?? defaultUpdateIntervalGenerator;
 
   private initialSeconds: any;
   private lastInput: any;
