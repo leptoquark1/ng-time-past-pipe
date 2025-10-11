@@ -3,9 +3,10 @@ import { getDataSourcesExamples, getFutureExamples, getOutputExamples } from './
 
 
 @Component({
-  selector: 'tpp-root',
-  templateUrl: './app.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'tpp-root',
+    templateUrl: './app.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AppComponent {
   private lastCustomInputElement?: HTMLInputElement;

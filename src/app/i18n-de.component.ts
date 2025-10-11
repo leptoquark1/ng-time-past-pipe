@@ -42,16 +42,15 @@ const timeDiffGenerator: TimeDiffGenerator = (diff: TimeDiff) => {
 };
 
 @Component({
-  selector: 'app-i18n-de',
-  standalone: true,
-  imports: [TimePastPipe],
-  viewProviders: [
-    {
-      provide: CUSTOM_TIME_DIFF_GENERATOR,
-      useValue: timeDiffGenerator,
-    },
-  ],
-  template: '{{ date | timePast }}',
+    selector: 'app-i18n-de',
+    imports: [TimePastPipe],
+    viewProviders: [
+        {
+            provide: CUSTOM_TIME_DIFF_GENERATOR,
+            useValue: timeDiffGenerator,
+        },
+    ],
+    template: '{{ date | timePast }}'
 })
 export class I18nDeComponent {
   @Input() date: Date | string | number = new Date();

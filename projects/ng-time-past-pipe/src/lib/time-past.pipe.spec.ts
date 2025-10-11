@@ -6,7 +6,8 @@ import {
 import { ComponentFixture, getTestBed } from '@angular/core/testing';
 
 @Component({
-  template: `<span id="testOutput">{{ date | timePast: overflow }}</span>`,
+    template: `<span id="testOutput">{{ date | timePast: overflow }}</span>`,
+    standalone: false
 })
 class TestComponent {
   @Input() date?: Date | string | number;
