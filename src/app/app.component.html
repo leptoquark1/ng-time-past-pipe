@@ -9,15 +9,17 @@
   <div class="panel--content">
     <p class="panel-description"></p>
 
-    <div class="example-container" *ngFor="let example of outputExamples">
-      <div class="example-header">
-        <h3>{{ example.label }}</h3>
-        <span class="example--source">{{ example.source ? example.source : (example.value | date: 'medium') }}</span>
+    @for (example of outputExamples; track example) {
+      <div class="example-container">
+        <div class="example-header">
+          <h3>{{ example.label }}</h3>
+          <span class="example--source">{{ example.source ? example.source : (example.value | date: 'medium') }}</span>
+        </div>
+        <div class="example-wrapper">
+          <div class="example--value">{{ example.value | timePast }}</div>
+        </div>
       </div>
-      <div class="example-wrapper">
-        <div class="example--value">{{ example.value | timePast }}</div>
-      </div>
-    </div>
+    }
   </div>
 </div>
 
@@ -30,15 +32,17 @@
   <div class="panel--content">
     <p class="panel-description">Basically everything that can be parsed by JavaScripts Date Constructor, but also some common used Date-Time types.</p>
 
-    <div class="example-container" *ngFor="let example of sourcesExamples">
-      <div class="example-header">
-        <h3>{{ example.label }}</h3>
-        <span class="example--source">{{ example.source ? example.source : example.value }}</span>
+    @for (example of sourcesExamples; track example) {
+      <div class="example-container">
+        <div class="example-header">
+          <h3>{{ example.label }}</h3>
+          <span class="example--source">{{ example.source ? example.source : example.value }}</span>
+        </div>
+        <div class="example-wrapper">
+          <div class="example--value">{{ example.value | timePast }}</div>
+        </div>
       </div>
-      <div class="example-wrapper">
-        <div class="example--value">{{ example.value | timePast }}</div>
-      </div>
-    </div>
+    }
   </div>
 </div>
 
@@ -50,15 +54,17 @@
   <div class="panel--content">
     <p class="panel-description">Even dates in the future are supported.</p>
 
-    <div class="example-container" *ngFor="let example of futureExamples">
-      <div class="example-header">
-        <h3>{{ example.label }}</h3>
-        <span class="example--source">{{ example.source ? example.source : (example.value | date: 'medium') }}</span>
+    @for (example of futureExamples; track example) {
+      <div class="example-container">
+        <div class="example-header">
+          <h3>{{ example.label }}</h3>
+          <span class="example--source">{{ example.source ? example.source : (example.value | date: 'medium') }}</span>
+        </div>
+        <div class="example-wrapper">
+          <div class="example--value">{{ example.value | timePast: example.overflow ?? true  }}</div>
+        </div>
       </div>
-      <div class="example-wrapper">
-        <div class="example--value">{{ example.value | timePast: example.overflow ?? true  }}</div>
-      </div>
-    </div>
+    }
   </div>
 </div>
 
@@ -72,15 +78,17 @@
   <div class="panel--content">
     <p class="panel-description"></p>
 
-    <div class="example-container" *ngFor="let example of outputExamples">
-      <div class="example-header">
-        <h3>{{ example.label }}</h3>
-        <span class="example--source">{{ example.source ? example.source : (example.value | date: 'medium') }}</span>
+    @for (example of outputExamples; track example) {
+      <div class="example-container">
+        <div class="example-header">
+          <h3>{{ example.label }}</h3>
+          <span class="example--source">{{ example.source ? example.source : (example.value | date: 'medium') }}</span>
+        </div>
+        <div class="example-wrapper">
+          <div class="example--value"><app-i18n-de [date]="example.value"></app-i18n-de></div>
+        </div>
       </div>
-      <div class="example-wrapper">
-        <div class="example--value"><app-i18n-de [date]="example.value"></app-i18n-de></div>
-      </div>
-    </div>
+    }
   </div>
 </div>
 
