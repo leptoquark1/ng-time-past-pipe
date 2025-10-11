@@ -2,9 +2,6 @@
   "name": "ng-time-past-pipe",
   "version": "0.0.0",
   "license": "MIT",
-  "engines": {
-    "node": "^20.11.1"
-  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -39,7 +36,7 @@
     "@angular/language-service": "^20.3.4",
     "@types/jasmine": "~3.10.2",
     "@types/jasminewd2": "~2.0.10",
-    "@types/node": "^20.19.21",
+    "@types/node": "20.19",
     "cross-env": "^7.0.3",
     "jasmine-core": "^4.2.0",
     "jasmine-spec-reporter": "^7.0.0",
