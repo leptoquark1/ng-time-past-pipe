@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.1](https://github.com/leptoquark1/ng-time-past-pipe/compare/v3.1.0...v3.1.1) (2025-10-12)
+
+
+### Bug Fixes
+
+* compatibility with angular 20 ([d0d336f](https://github.com/leptoquark1/ng-time-past-pipe/commit/d0d336fe625e922359e0760aa310dc54f3caf57b)), closes [#45](https://github.com/leptoquark1/ng-time-past-pipe/issues/45)
+* custom time-diff and interval generator in angular v15 and greater ([99fcb15](https://github.com/leptoquark1/ng-time-past-pipe/commit/99fcb1587274b2e53bc0b2e43cfe04723e4cdb48)), closes [#44](https://github.com/leptoquark1/ng-time-past-pipe/issues/44)
+
 ## [3.1.0](https://github.com/leptoquark1/ng-time-past-pipe/compare/v3.0.0...v3.1.0) (2023-01-07)
 
 
