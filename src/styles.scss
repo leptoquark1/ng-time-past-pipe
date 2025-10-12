@@ -1,3 +1,5 @@
+@use "sass:color";
+
 html, body {
   margin: 0;
 }
@@ -126,7 +128,7 @@ h3 {
 }
 
 label[for='custom-input'] {
-  color: lighten(#2f2f2f, 30%);
+  color: color.adjust(#2f2f2f, $lightness: 30%);
   padding-right: .5rem;
 }
 

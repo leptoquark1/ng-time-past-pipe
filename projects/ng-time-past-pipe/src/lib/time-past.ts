@@ -39,6 +39,6 @@ export const parseInputValue = (value: TAInput): number => {
  * @param value The optimistic input value to validate
  * @internal
  */
-export const validateTAInputType = (value: TAInput): boolean => {
-  return (typeof value === 'number' || typeof value === 'string' || value instanceof Date);
+export const validateTAInputType = (value: any): boolean => {
+  return typeof value === 'number' || !isNaN(Date.parse(value));
 };

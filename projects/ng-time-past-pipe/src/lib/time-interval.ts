@@ -1,5 +1,5 @@
 import { TimeDiff } from './time-diff';
-import { inject, InjectFlags, InjectionToken } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 
 /**
  * Function Type for the `UpdateIntervalGenerator`
@@ -36,15 +36,3 @@ export const defaultUpdateIntervalGenerator: UpdateIntervalGenerator = (diff: Ti
   // update every hour
   return 3600;
 };
-
-/**
- * Provides the `UpdateIntervalGenerator` preferring a custom provider for internal usage
- *
- * @internal
- */
-export const UPDATE_INTERVAL_GENERATOR = new InjectionToken<UpdateIntervalGenerator>('Update Interval Generator', {
-  factory: () => {
-    const customGenerator = inject(CUSTOM_UPDATE_INTERVAL_GENERATOR, InjectFlags.Optional);
-    return customGenerator ?? defaultUpdateIntervalGenerator;
-  },
-});
