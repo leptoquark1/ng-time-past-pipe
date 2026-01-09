@@ -20,7 +20,7 @@
   "private": false,
   "dependencies": {
     "@angular/common": "^20.3.4",
-    "@angular/compiler": "^20.3.4",
+    "@angular/compiler": "^20.3.16",
     "@angular/core": "^20.3.4",
     "@angular/platform-browser": "^20.3.4",
     "@angular/platform-browser-dynamic": "^20.3.4",
